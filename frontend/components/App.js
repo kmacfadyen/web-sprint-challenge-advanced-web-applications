@@ -107,36 +107,39 @@ export default function App() {
       })
   }
 
-  const updateArticle = ({ article_id, article }) => {
+  const updateArticle = (article) => {
     // ✨ implement
     // You got this!
     axiosWithAuth()
       .put(`${articlesUrl}/${article.article_id}`, article)
       .then(res => {
         // console.log(res);
+        const updated = res.data.article
         setMessage(res.data.message);
         setSpinnerOn(false);
         setArticles(articles.map(
-          art => (art.article_id === article.article_id) ? res.data.article : art
+          art => (art.article_id === article.article_id) ? updated : art
         ));
         setCurrentArticleId(null);
       })
       .catch(err => {
         console.log(err);
+        setMessage('');
       })
   }
 
-  const deleteArticle = article_id => {
+  const deleteArticle = (article_id) => {
     // ✨ implement
     axiosWithAuth()
-      .delete(`${articlesUrl}/${article.article_id}`)
+      .delete(`${articlesUrl}/${article_id}`)
       .then(res => {
         // console.log(res);
-        setMessage('Article 1 was deleted, Foo!');
-        setArticles(articles.filter(art => (art.article_id != article_id)))
+        setMessage(res.data.message);
+        setArticles(articles.filter(art => (art.article_id !== article_id)));
       })
       .catch(err => {
         console.log(err);
+        setMessage('');
       })
   }
 
